@@ -1,9 +1,9 @@
 class ChatbotPage {
   constructor(page) {
     this.page = page;
-    this.input = page.locator('textarea.chat-input');
-    this.messages = page.locator('.chat-message');
-    this.sendBtn = page.locator('button.send-btn');
+    this.inputQuery = page.locator('[id="chat-input"]');
+    this.queryResponse = page.locator('[class="h-full flex pt-8"]');
+    this.sendBtn = page.locator('[id="send-message-button"]');
   }
 
   async goto() {
@@ -12,12 +12,14 @@ class ChatbotPage {
   }
 
   async sendMessage(message) {
-    await this.input.fill(message);
+    await this.inputQuery.fill(message);
     await this.sendBtn.click();
   }
 
   async lastResponse() {
-    return await this.messages.last().innerText();
+    const last = this.queryResponse.last();
+    await last.waitFor({ state: 'visible' });
+    return await last.innerText();
   }
 }
 
