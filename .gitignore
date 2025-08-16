@@ -1,0 +1,30 @@
+# Node dependencies
+node_modules/
+
+# Playwright test artifacts
+test-results/
+playwright-report/
+blob-report/
+*.zip
+*.log
+
+# Videos & Traces
+*.mp4
+*.webm
+*.zip
+*.trace
+
+# Environment files (credentials)
+.env
+
+# System files
+.DS_Store
+Thumbs.db
+
+# VSCode / IDE files
+.vscode/
+.idea/
+
+# OS specific
+*.swp
+*.swo

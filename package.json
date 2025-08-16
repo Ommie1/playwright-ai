@@ -1,0 +1,25 @@
+{
+  "name": "playwright-ai",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ommie1/playwright-ai.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ommie1/playwright-ai/issues"
+  },
+  "homepage": "https://github.com/Ommie1/playwright-ai#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.54.2",
+    "@types/node": "^24.3.0"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.1"
+  }
+}

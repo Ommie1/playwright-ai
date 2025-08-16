@@ -1,0 +1,10 @@
+{
+  "english": [
+    { "prompt": "What is the UAE visa renewal process?", "expectedKeywords": ["visa", "renewal", "UAE"] },
+    { "prompt": "How can I pay traffic fines?", "expectedKeywords": ["traffic", "fines", "payment"] }
+  ],
+  "arabic": [
+    { "prompt": "ما هي خطوات تجديد الإقامة؟", "expectedKeywords": ["الإقامة", "تجديد", "الإمارات"] },
+    { "prompt": "كيف يمكنني دفع المخالفات المرورية؟", "expectedKeywords": ["مخالفات", "مرور", "دفع"] }
+  ]
+}
