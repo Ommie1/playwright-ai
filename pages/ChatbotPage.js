@@ -1,13 +1,13 @@
 class ChatbotPage {
   constructor(page) {
     this.page = page;
-    this.inputQuery = page.locator('[id="chat-input"]');
+    this.inputQuery = page.locator('#chat-input');
+    this.emptyInputQuery = page.locator('.is-empty.is-editor-empty');
     this.queryResponse = page.locator('[class="h-full flex pt-8"]');
-    this.sendBtn = page.locator('[id="send-message-button"]');
+    this.sendBtn = page.locator('#send-message-button');
   }
 
   async goto() {
-    // Assuming chatbot loads after login
     await this.page.goto('/');
   }
 
@@ -17,10 +17,13 @@ class ChatbotPage {
   }
 
   async lastResponse() {
-    const last = this.queryResponse.last();
-    await last.waitFor({ state: 'visible' });
-    return await last.innerText();
+    await this.page.waitForFunction(
+      () => document.querySelectorAll('.shimmer-text').length === 0,
+      { timeout: 20000 }
+    );
+    await this.lastResponseLocator.waitFor({ state: 'visible', timeout: 20000 });
+    return await this.lastResponseLocator.innerText();
   }
 }
 
-module.exports = { ChatbotPage };
+export default { ChatbotPage };

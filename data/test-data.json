@@ -1,10 +1,22 @@
 {
   "english": [
-    { "prompt": "What is the UAE visa renewal process?", "expectedKeywords": ["visa", "renewal", "UAE"] },
-    { "prompt": "How can I pay traffic fines?", "expectedKeywords": ["traffic", "fines", "payment"] }
+    {
+      "prompt": "What are UAE visa requirements?",
+      "expectedDirection": "ltr"
+    },
+    {
+      "prompt": "How can I renew my Emirates ID?",
+      "expectedDirection": "ltr"
+    }
   ],
   "arabic": [
-    { "prompt": "ما هي خطوات تجديد الإقامة؟", "expectedKeywords": ["الإقامة", "تجديد", "الإمارات"] },
-    { "prompt": "كيف يمكنني دفع المخالفات المرورية؟", "expectedKeywords": ["مخالفات", "مرور", "دفع"] }
+    {
+      "prompt": "ما هي متطلبات التأشيرة في الإمارات؟",
+      "expectedDirection": "rtl"
+    },
+    {
+      "prompt": "كيف يمكنني تجديد الهوية الإماراتية؟",
+      "expectedDirection": "rtl"
+    }
   ]
 }
