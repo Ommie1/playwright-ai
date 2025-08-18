@@ -1,7 +1,7 @@
 const { test, expect } = require('@playwright/test');
-const { LoginPage } = require('../../pages/LoginPage');
-const { ChatbotPage } = require('../../pages/ChatbotPage').default;
-const { email, password } = require('../../utils/config');
+const { LoginPage } = require('../pages/LoginPage');
+const { ChatbotPage } = require('../pages/ChatbotPage').default;
+const { email, password } = require('../utils/config');
 const testData = require('../../data/test-data.json'); // adjust path if needed
 
 // ----------------------
@@ -64,7 +64,7 @@ test.describe('Chatbot UI Behavior - Mobile', () => {
   });
 });
 
-// ----------------------
+
 // English Chatbot Tests
 // ----------------------
 test.describe.only('English Chatbot Tests', () => {

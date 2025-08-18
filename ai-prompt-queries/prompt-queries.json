@@ -1,0 +1,26 @@
+[
+  {
+    "prompt": "What are UAE visa requirements?",
+    "expectedDirection": "ltr"
+  },
+  {
+    "prompt": "How can I renew my Emirates ID?",
+    "expectedDirection": "ltr"
+  },
+  {
+    "prompt": "Where can I check Dubai fines?",
+    "expectedDirection": "ltr"
+  },
+  {
+    "prompt": "ما هي متطلبات تأشيرة الإمارات؟",
+    "expectedDirection": "rtl"
+  },
+  {
+    "prompt": "كيف أجدد بطاقة الهوية الإماراتية؟",
+    "expectedDirection": "rtl"
+  },
+  {
+    "prompt": "أين يمكنني التحقق من المخالفات في دبي؟",
+    "expectedDirection": "rtl"
+  }
+]

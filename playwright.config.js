@@ -1,15 +1,20 @@
 // @ts-check
 const { defineConfig } = require('@playwright/test');
 
+const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+
 module.exports = defineConfig({
   testDir: './tests',
-  timeout: 60 * 1000,
+  timeout: 600000,
   retries: 1,
   workers: 1,   // 👈 Force Playwright to use only ONE worker
-  reporter: [['html'], ['list']],
+  reporter:  [
+    ['list'],
+    ['html', { open: 'never', outputFolder: `reports/html-report-${timestamp}` }]
+  ],
   use: {
     headless: false,   // 👈 open browser window
-    viewport: { width: 1280, height: 720 },
+    viewport: null,
     baseURL: 'https://govgpt.sandbox.dge.gov.ae/',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
@@ -17,10 +22,10 @@ module.exports = defineConfig({
   },
   projects: [
     {
-      name: 'chromium',
+      name: 'firefox',
       use: {
-        browserName: 'chromium',
-        channel: 'chrome'   // 👈 runs on your installed Google Chrome
+        browserName: 'firefox',
+        channel: 'firefox'   // 👈 runs on your installed Google Chrome
       }
     }
   ]
