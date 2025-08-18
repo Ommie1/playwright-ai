@@ -13,7 +13,7 @@ function saveResponse(responseText, folderRelative = 'ai-response-log') {
   const filePath = path.join(folderPath, `Prompt Response - ${timestamp}.txt`);
 
   fs.writeFileSync(filePath, responseText, 'utf-8');
-  console.log(`✅ Response written to: ${filePath}`);
+  console.log(`Response written to: ${filePath}`);
   return filePath;
 }
 

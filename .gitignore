@@ -1,5 +1,8 @@
 # Node dependencies
 node_modules/
+reports/
+test-results
+playwright-report/
 
 # Playwright test artifacts
 test-results/

@@ -5,15 +5,16 @@ const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
 
 module.exports = defineConfig({
   testDir: './tests',
+  globalSetup: require.resolve('./global-setup.js'),  
   timeout: 600000,
   retries: 1,
-  workers: 1,   // 👈 Force Playwright to use only ONE worker
+  workers: 1,   // Force Playwright to use only ONE worker
   reporter:  [
     ['list'],
     ['html', { open: 'never', outputFolder: `reports/html-report-${timestamp}` }]
   ],
   use: {
-    headless: false,   // 👈 open browser window
+    headless: false,   // open browser window
     viewport: null,
     baseURL: 'https://govgpt.sandbox.dge.gov.ae/',
     screenshot: 'only-on-failure',
@@ -22,10 +23,10 @@ module.exports = defineConfig({
   },
   projects: [
     {
-      name: 'firefox',
+      name: 'chrome',
       use: {
-        browserName: 'firefox',
-        channel: 'firefox'   // 👈 runs on your installed Google Chrome
+        browserName: 'chromium',
+        channel: 'chrome'   // runs on your installed Google Chrome
       }
     }
   ]
