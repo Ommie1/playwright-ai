@@ -17,4 +17,8 @@ function saveResponse(responseText, folderRelative = 'ai-response-log') {
   return filePath;
 }
 
-module.exports = { saveResponse };
+function isArabic(text) {
+  return /[\u0600-\u06FF]/.test(text);
+}
+
+module.exports = { isArabic, saveResponse };

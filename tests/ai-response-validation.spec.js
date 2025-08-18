@@ -3,7 +3,7 @@ const { LoginPage } = require('../pages/LoginPage');
 const { ChatbotPage } = require('../pages/ChatbotPage').default;
 const { email, password } = require('../utils/config');
 const promptQuery = require('../ai-prompt-queries/prompt-queries.json');
-const { saveResponse } = require('../utils/helper');
+const { isArabic, saveResponse } = require('../utils/helper');
 
 test.describe('Multi Language - Response validation', () => {
   let chatbot;
@@ -46,7 +46,18 @@ test.describe('Multi Language - Response validation', () => {
         await page.waitForTimeout(500);
       }
 
-      console.log('***************** Final Response Text:', finalResponse);
+      // For debugging: log the final response text
+      // console.log('***************** Final Response Text:', finalResponse);
+
+
+      // Verify LTR and RTL languages
+      const actualDirection = isArabic(finalResponse) ? "rtl" : "ltr";
+      expect(actualDirection).toBe(query.expectedDirection);
+
+      // For debugging: log the detected language direction
+      // console.log(
+      //   `Language Detected: ${actualDirection.toUpperCase()} | Expected: ${query.expectedDirection.toUpperCase()}`
+      // );
 
       // Save response with timestamp
       saveResponse(finalResponse, 'ai-response-log');
