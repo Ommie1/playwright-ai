@@ -3,8 +3,9 @@ class ChatbotPage {
     this.page = page;
     this.inputQuery = page.locator('#chat-input');
     this.emptyInputQuery = page.locator('.is-empty.is-editor-empty');
-    this.queryResponse = page.locator('[class="h-full flex pt-8"]');
+    this.queryResponse = page.locator('[id="messages-container"]');
     this.sendBtn = page.locator('#send-message-button');
+    this.processingIndicator = page.getByText('Processing your request..');
   }
 
   async goto() {

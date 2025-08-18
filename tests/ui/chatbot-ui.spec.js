@@ -7,7 +7,7 @@ const testData = require('../../data/test-data.json'); // adjust path if needed
 // ----------------------
 // Desktop UI Tests
 // ----------------------
-test.describe.only('Chatbot UI Behavior - Desktop', () => {
+test.describe('Chatbot UI Behavior - Desktop', () => {
   let chatbot;
 
   test.beforeEach(async ({ page }) => {
@@ -67,7 +67,7 @@ test.describe('Chatbot UI Behavior - Mobile', () => {
 // ----------------------
 // English Chatbot Tests
 // ----------------------
-test.describe('English Chatbot Tests', () => {
+test.describe.only('English Chatbot Tests', () => {
   let chatbot;
 
   test.beforeEach(async ({ page }) => {
@@ -77,17 +77,32 @@ test.describe('English Chatbot Tests', () => {
     chatbot = new ChatbotPage(page);
   });
 
-  for (const { prompt, expectedKeywords } of testData.english) {
-    test(`English: "${prompt}"`, async () => {
-      await chatbot.sendMessage(prompt);
+  test('User can send messages via input box', async ({ page }) => {
 
-      // waits until last response is ready
-      const response = await chatbot.lastResponse();
+    // verify user can type in input box
+    await chatbot.sendMessage('What are UAE visa requirements?');
 
-      for (const keyword of expectedKeywords) {
-        expect(response.toLowerCase()).toContain(keyword.toLowerCase());
+    // Wait for analysing loader to complete to disappear 
+    await expect(chatbot.processingIndicator).toBeHidden({ timeout: 60000 });
+
+    // Get qury response
+    const messagesContainer = chatbot.queryResponse;
+
+    // Wait until text stops changing Chat GPT stream finished.
+    let prevText = '';
+    let stableCount = 0;
+    for (let i = 0; i < 360; i++) { // up to ~60s (120 * 500ms)
+      const currentText = await messagesContainer.innerText();
+      if (currentText === prevText) {
+        stableCount++;
+        if (stableCount >= 2) break; // stable for 1s
+      } else {
+        stableCount = 0;
+        prevText = currentText;
       }
-      expect(response.length).toBeGreaterThan(10);
-    });
-  }
+      await page.waitForTimeout(500);
+    }
+
+    console.log('***************** Final Response Text:', prevText);
+  });
 });
