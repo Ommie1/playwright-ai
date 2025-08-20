@@ -1,10 +1,9 @@
-const { test, expect } = require('@playwright/test');
-const { LoginPage } = require('../pages/LoginPage');
-const { ChatbotPage } = require('../pages/ChatbotPage');
-const { email, password } = require('../utils/config');
-const testData = require('../data/test-data.json'); // adjust path if needed
-const promptQuery = require('../ai-prompt-queries/prompt-queries.json');
-const { isArabic, saveResponse } = require('../utils/helper');
+const { test, expect } = require("@playwright/test");
+const { LoginPage } = require("../pages/LoginPage");
+const { ChatbotPage } = require("../pages/ChatbotPage");
+const { email, password, STREAMING_WAIT_MS } = require("../utils/config");
+const testData = require("../data/test-data.json");
+const { isArabic, saveResponse } = require("../utils/helper");
 
 // ----------------------
 // Desktop UI Tests
@@ -12,8 +11,7 @@ const { isArabic, saveResponse } = require('../utils/helper');
 
 let chatbot;
 
-test.describe('Chatbot UI Behavior - Desktop', () => {
-
+test.describe("Chatbot UI Behavior - Desktop", () => {
   test.beforeEach(async ({ page }) => {
     const login = new LoginPage(page);
     await login.goto();
@@ -21,29 +19,29 @@ test.describe('Chatbot UI Behavior - Desktop', () => {
     chatbot = new ChatbotPage(page);
   });
 
-  test('Verify that Chat widget loads correctly on desktop and mobile', async () => {
+  test("Verify that Chat widget loads correctly on desktop and mobile", async () => {
     // Verify query input box is visible
     await expect(chatbot.inputQuery).toBeVisible();
   });
 
-  test('Verify that User can send messages via input box', async () => {
+  test("Verify that User can send messages via input box", async () => {
     // verify user can type in input box
     await chatbot.sendMessage(testData.greetingText);
     // Verify response is received
-    await expect(chatbot.queryResponse.last()).toContainText(testData.responseText,
+    await expect(chatbot.queryResponse.last()).toContainText(
+      testData.responseText,
       { timeout: 15000 }
     );
   });
 
-    test('Verify that AI responses are rendered properly in the conversation area', async () => {
+  test("Verify that AI responses are rendered properly in the conversation area", async () => {
     // verify user can type in input box
     await chatbot.sendMessage(testData.greetingText);
     // Verify AI response is rendered area
-     await expect(chatbot.queryResponse).toBeVisible();
+    await expect(chatbot.queryResponse).toBeVisible();
   });
 
-
-  test('Input is cleared after sending', async () => {
+  test("Input is cleared after sending", async () => {
     // Enter query
     await chatbot.sendMessage(testData.greetingText);
     // Verify query input is cleared
@@ -59,11 +57,11 @@ test.describe('Chatbot UI Behavior - Desktop', () => {
 // ----------------------
 // Mobile UI Tests
 // ----------------------
-test.describe('Chatbot UI Behavior - Mobile', () => {
-  test('Chat widget loads correctly on mobile', async ({ browser }) => {
+test.describe("Chatbot UI Behavior - Mobile", () => {
+  test("Chat widget loads correctly on mobile", async ({ browser }) => {
     const mobile = await browser.newContext({
       viewport: { width: 390, height: 844 }, // iPhone 12 size
-      isMobile: true
+      isMobile: true,
     });
     const page = await mobile.newPage();
     const login = new LoginPage(page);
@@ -81,7 +79,8 @@ test.describe('Chatbot UI Behavior - Mobile', () => {
 });
 
 // Multi Language Response Validation
-test.describe('Multilingual support (LTR for English, RTL for Arabic)', () => {
+test.describe
+  .only("Multilingual support (LTR for English, RTL for Arabic)", () => {
   let chatbot;
 
   test.beforeEach(async ({ page }) => {
@@ -92,28 +91,28 @@ test.describe('Multilingual support (LTR for English, RTL for Arabic)', () => {
   });
 
   // Loop through all English prompts from JSON
-  for (const query of promptQuery) {
-    test(`English response validation: ${query.prompt}`, async ({ page }) => {
+  for (const query of testData.multiLanguageQueries) {
+    test(`English response validation: ${query.queryText}`, async ({
+      page,
+    }) => {
       // Send question
-      await chatbot.sendMessage(query.prompt);
+      await chatbot.sendMessage(query.queryText);
 
       // Wait for loader to disappear
       await expect(chatbot.processingIndicator).toBeHidden({ timeout: 60000 });
 
       // Wait for final stable streamed response
       const messagesContainer = chatbot.queryResponse;
-      let finalResponse = '';
+      let finalResponse = "";
       let stableCount = 0;
 
-      const maxWaitMs = 15000; // 15 seconds max wait
+      const maxWaitMs = STREAMING_WAIT_MS; // Stream wait timeout 1 min
       const start = Date.now();
 
       while (Date.now() - start < maxWaitMs) {
         const currentText = await messagesContainer.innerText();
 
         if (currentText === finalResponse) {
-          stableCount++;
-          if (stableCount >= 2) break; // stable for ~1s
         } else {
           stableCount = 0;
           finalResponse = currentText;
@@ -121,9 +120,6 @@ test.describe('Multilingual support (LTR for English, RTL for Arabic)', () => {
 
         await page.waitForTimeout(500);
       }
-
-      // For debugging: log the final response text
-      // console.log('***************** Final Response Text:', finalResponse);
 
       // Verify LTR and RTL languages
       const actualDirection = isArabic(finalResponse) ? "rtl" : "ltr";
@@ -135,7 +131,7 @@ test.describe('Multilingual support (LTR for English, RTL for Arabic)', () => {
       // );
 
       // Save response with timestamp
-      saveResponse(finalResponse, 'ai-response-log');
+      saveResponse(finalResponse, "ai-response-log");
     });
   }
 

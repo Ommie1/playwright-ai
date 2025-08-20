@@ -1,7 +1,7 @@
 const { test, expect } = require("@playwright/test");
 const { LoginPage } = require("../pages/LoginPage");
 const { ChatbotPage } = require("../pages/ChatbotPage");
-const { email, password } = require("../utils/config");
+const { email, password, STREAMING_WAIT_MS } = require("../utils/config");
 const testData = require("../data/test-data.json"); // adjust path if needed
 const { saveResponse } = require('../utils/helper');
 
@@ -28,7 +28,7 @@ test.describe("Security and Injection Handling", () => {
       let finalResponse = "";
       let stableCount = 0;
 
-      const maxWaitMs = 15000; // 15 seconds max wait
+      const maxWaitMs = STREAMING_WAIT_MS; // Stream wait timeout 1 min
       const start = Date.now();
 
       while (Date.now() - start < maxWaitMs) {

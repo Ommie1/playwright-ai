@@ -2,7 +2,7 @@ const { test, expect } = require('@playwright/test');
 const { LoginPage } = require('../pages/LoginPage');
 const { ChatbotPage } = require('../pages/ChatbotPage');
 const { email, password } = require('../utils/config');
-const promptQuery = require('../ai-prompt-queries/prompt-queries.json');
+const testData = require('../ai-prompt-queries/prompt-queries.json');
 const { isArabic, saveResponse } = require('../utils/helper');
 
 test.describe('Multilingual support (LTR for English, RTL for Arabic)', () => {
@@ -16,10 +16,10 @@ test.describe('Multilingual support (LTR for English, RTL for Arabic)', () => {
   });
 
   // Loop through all English prompts from JSON
-  for (const query of promptQuery) {
-    test(`English response validation: ${query.prompt}`, async ({ page }) => {
+  for (const query of multiLanguageQueries) {
+    test(`English response validation: ${query.queryText}`, async ({ page }) => {
       // Send question
-      await chatbot.sendMessage(query.prompt);
+      await chatbot.sendMessage(query.queryText);
 
       // Wait for loader to disappear
       await expect(chatbot.processingIndicator).toBeHidden({ timeout: 60000 });
