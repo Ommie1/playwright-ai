@@ -79,8 +79,7 @@ test.describe("Chatbot UI Behavior - Mobile", () => {
 });
 
 // Multi Language Response Validation
-test.describe
-  .only("Multilingual support (LTR for English, RTL for Arabic)", () => {
+test.describe("Multilingual support (LTR for English, RTL for Arabic)", () => {
   let chatbot;
 
   test.beforeEach(async ({ page }) => {
