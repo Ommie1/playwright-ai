@@ -1,11 +1,11 @@
 const { test, expect } = require('@playwright/test');
 const { LoginPage } = require('../pages/LoginPage');
-const { ChatbotPage } = require('../pages/ChatbotPage').default;
+const { ChatbotPage } = require('../pages/ChatbotPage');
 const { email, password } = require('../utils/config');
 const promptQuery = require('../ai-prompt-queries/prompt-queries.json');
 const { isArabic, saveResponse } = require('../utils/helper');
 
-test.describe('Multi Language - Response validation', () => {
+test.describe('Multilingual support (LTR for English, RTL for Arabic)', () => {
   let chatbot;
 
   test.beforeEach(async ({ page }) => {
@@ -48,7 +48,6 @@ test.describe('Multi Language - Response validation', () => {
 
       // For debugging: log the final response text
       // console.log('***************** Final Response Text:', finalResponse);
-
 
       // Verify LTR and RTL languages
       const actualDirection = isArabic(finalResponse) ? "rtl" : "ltr";

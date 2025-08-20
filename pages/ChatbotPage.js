@@ -27,4 +27,4 @@ class ChatbotPage {
   }
 }
 
-export default { ChatbotPage };
+module.exports = { ChatbotPage };
