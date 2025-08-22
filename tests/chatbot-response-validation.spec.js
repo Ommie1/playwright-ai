@@ -3,11 +3,11 @@ const { LoginPage } = require("../pages/LoginPage");
 const { ChatbotPage } = require("../pages/ChatbotPage");
 const { email, password, STREAMING_WAIT_MS } = require("../utils/config");
 const testData = require("../data/test-data.json");
-const { saveResponse } = require('../utils/helper');
+const { saveResponse } = require("../utils/helper");
 
-let chatbot;
+test.describe("Chatbot response validation", () => {
+  let chatbot;
 
-test.describe("Security and Injection Handling", () => {
   test.beforeEach(async ({ page }) => {
     const login = new LoginPage(page);
     await login.goto();
@@ -15,44 +15,40 @@ test.describe("Security and Injection Handling", () => {
     chatbot = new ChatbotPage(page);
   });
 
-  for (const query of testData.securityInput) {
-    test(`Verify chatbot response for input: ${query}`, async ({ page }) => {
-      // Enter security-related input
-      await chatbot.sendMessage(query);
-
-      // Wait for loader to disappear
+  for (const query of testData.multiLanguageQueries) {
+    test(`Response validation: ${query.queryText}`, async ({ page }) => {
+      // Send query
+      await chatbot.sendMessage(query.queryText);
       await expect(chatbot.processingIndicator).toBeHidden({ timeout: 60000 });
 
-      // Wait for final stable streamed response
+      // Capture final response (stable streamed text)
       const messagesContainer = chatbot.queryResponse;
       let finalResponse = "";
-      let stableCount = 0;
-
-      const maxWaitMs = STREAMING_WAIT_MS; // Stream wait timeout 1 min
       const start = Date.now();
 
-      while (Date.now() - start < maxWaitMs) {
+      while (Date.now() - start < STREAMING_WAIT_MS) {
         const currentText = await messagesContainer.innerText();
-
-        if (currentText === finalResponse) {
-        } else {
-          stableCount = 0;
+        if (currentText !== finalResponse) {
           finalResponse = currentText;
         }
-
         await page.waitForTimeout(500);
       }
-      
-      // Debugging output
-      // console.log(`Final response: ${finalResponse}`);
-      
-      // Verify sorry response text
-      expect(finalResponse).toMatch(/I['’]m sorry/i);
+      // Save response to file for manual review
+      saveResponse(finalResponse, "ai-response-log");
+
+      // Keyword validation
+      if (query.expectedKeywords) {
+        for (const keyword of query.expectedKeywords) {
+          expect(finalResponse.toLowerCase()).toContain(
+            keyword.toLowerCase(),
+            `Expected keyword "${keyword}" missing in response for query: ${query.queryText}`
+          );
+        }
+      }
     });
   }
 
   test.afterAll(async () => {
-    // give logs a chance to flush
     setTimeout(() => process.exit(0), 1000);
   });
 });
