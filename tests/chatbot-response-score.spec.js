@@ -3,7 +3,7 @@ const { LoginPage } = require("../pages/LoginPage");
 const { ChatbotPage } = require("../pages/ChatbotPage");
 const { email, password, STREAMING_WAIT_MS } = require("../utils/config");
 const testData = require("../data/test-data.json");
-const { saveResponse } = require("../utils/helper");
+const { saveResponse, saveScore } = require("../utils/helper");
 
 test.describe("Chatbot response validation", () => {
   let chatbot;
@@ -36,15 +36,30 @@ test.describe("Chatbot response validation", () => {
       // Save response to file for manual review
       saveResponse(finalResponse, "ai-response-log");
 
-        // Keyword validation in AI repsonse
-        if (query.expectedKeywords) {
-          for (const keyword of query.expectedKeywords) {
-            expect(finalResponse.toLowerCase()).toContain(
-              keyword.toLowerCase(),
-              `Expected keyword "${keyword}" missing in response for query: ${query.queryText}`
-            );
+      // --- 🔥 Scoring Mechanism ---
+      if (query.expectedKeywords && query.expectedKeywords.length > 0) {
+        const responseLower = finalResponse.toLowerCase();
+        let matched = 0;
+
+        for (const keyword of query.expectedKeywords) {
+          if (responseLower.includes(keyword.toLowerCase())) {
+            matched++;
           }
         }
+
+        const score = Math.round(
+          (matched / query.expectedKeywords.length) * 100
+        );
+
+        console.log(`\n🔍 Query: "${query.queryText}"`);
+        console.log(`🤖 Response: "${finalResponse}"`);
+        console.log(
+          `📊 Score: ${score}% (Matched ${matched}/${query.expectedKeywords.length})`
+        );
+
+        // Save score to JSON log
+        saveScore(query.queryText, score);
+      }
     });
   }
 

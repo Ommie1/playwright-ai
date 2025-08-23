@@ -21,4 +21,30 @@ function isArabic(text) {
   return /[\u0600-\u06FF]/.test(text);
 }
 
-module.exports = { isArabic, saveResponse };
+
+function saveScore(query, score, folder = "ai-response-score", fileName = "score-log.json") {
+  const dir = path.join(process.cwd(), folder);
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true }); // create folder if not exist
+
+  const filePath = path.join(dir, fileName);
+  let data = [];
+
+  if (fs.existsSync(filePath)) {
+    try {
+      data = JSON.parse(fs.readFileSync(filePath, "utf8"));
+    } catch {
+      data = [];
+    }
+  }
+
+  data.push({
+    query,
+    score: Number(score.toFixed(2)),
+    timestamp: new Date().toISOString()
+  });
+
+  // Write JSON with utf8 encoding for Arabic/English support
+  fs.writeFileSync(filePath, JSON.stringify(data, null, 2), "utf8");
+}
+
+module.exports = { isArabic, saveResponse, saveScore };
