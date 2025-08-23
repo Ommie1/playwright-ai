@@ -4,6 +4,7 @@ const { ChatbotPage } = require("../pages/ChatbotPage");
 const { email, password, STREAMING_WAIT_MS } = require("../utils/config");
 const testData = require("../data/test-data.json");
 const { saveResponse } = require("../utils/helper");
+const { evaluateResponse } = require("../utils/aiEvaluator");
 
 test.describe("Chatbot response validation", () => {
   let chatbot;
@@ -36,15 +37,15 @@ test.describe("Chatbot response validation", () => {
       // Save response to file for manual review
       saveResponse(finalResponse, "ai-response-log");
 
-      // Keyword validation
-      if (query.expectedKeywords) {
-        for (const keyword of query.expectedKeywords) {
-          expect(finalResponse.toLowerCase()).toContain(
-            keyword.toLowerCase(),
-            `Expected keyword "${keyword}" missing in response for query: ${query.queryText}`
-          );
+        // Keyword validation in AI repsonse
+        if (query.expectedKeywords) {
+          for (const keyword of query.expectedKeywords) {
+            expect(finalResponse.toLowerCase()).toContain(
+              keyword.toLowerCase(),
+              `Expected keyword "${keyword}" missing in response for query: ${query.queryText}`
+            );
+          }
         }
-      }
     });
   }
 

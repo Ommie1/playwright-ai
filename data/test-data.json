@@ -9,12 +9,23 @@
     {
       "queryText": "What are UAE visa requirements?",
       "expectedDirection": "ltr",
-      "expectedKeywords": ["UAE", "visa", "requirements", "documents", "eligibility"]
+      "expectedKeywords": [
+        "UAE",
+        "visa",
+        "requirements",
+        "documents",
+        "eligibility"
+      ]
     },
     {
       "queryText": "ما هي متطلبات التأشيرة لدولة الإمارات؟",
       "expectedDirection": "rtl",
-      "expectedKeywords": ["يوماً", "الإمارات", "العربية", "السياح"]
+      "expectedKeywords": [
+        "يوماً",
+        "الإمارات",
+        "جواز سفر",
+        "السياح"
+      ]
     }
   ]
 }
