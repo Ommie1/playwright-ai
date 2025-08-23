@@ -4,7 +4,6 @@ const { ChatbotPage } = require("../pages/ChatbotPage");
 const { email, password, STREAMING_WAIT_MS } = require("../utils/config");
 const testData = require("../data/test-data.json");
 const { saveResponse } = require("../utils/helper");
-const { evaluateResponse } = require("../utils/aiEvaluator");
 
 test.describe("Chatbot response validation", () => {
   let chatbot;
