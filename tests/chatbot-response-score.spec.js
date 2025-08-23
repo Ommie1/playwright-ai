@@ -36,7 +36,7 @@ test.describe("Chatbot response validation", () => {
       // Save response to file for manual review
       saveResponse(finalResponse, "ai-response-log");
 
-      // --- 🔥 Scoring Mechanism ---
+      // --- Scoring Mechanism ---
       if (query.expectedKeywords && query.expectedKeywords.length > 0) {
         const responseLower = finalResponse.toLowerCase();
         let matched = 0;
@@ -49,12 +49,6 @@ test.describe("Chatbot response validation", () => {
 
         const score = Math.round(
           (matched / query.expectedKeywords.length) * 100
-        );
-
-        console.log(`\n🔍 Query: "${query.queryText}"`);
-        console.log(`🤖 Response: "${finalResponse}"`);
-        console.log(
-          `📊 Score: ${score}% (Matched ${matched}/${query.expectedKeywords.length})`
         );
 
         // Save score to JSON log

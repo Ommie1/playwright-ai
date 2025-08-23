@@ -3,7 +3,6 @@ const { LoginPage } = require("../pages/LoginPage");
 const { ChatbotPage } = require("../pages/ChatbotPage");
 const { email, password, STREAMING_WAIT_MS } = require("../utils/config");
 const testData = require("../data/test-data.json");
-const { saveResponse } = require('../utils/helper');
 
 let chatbot;
 
@@ -42,10 +41,7 @@ test.describe("Security and Injection Handling", () => {
 
         await page.waitForTimeout(500);
       }
-      
-      // Debugging output
-      // console.log(`Final response: ${finalResponse}`);
-      
+
       // Verify sorry response text
       expect(finalResponse).toMatch(/I['’]m sorry/i);
     });

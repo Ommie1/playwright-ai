@@ -124,11 +124,6 @@ test.describe("Multilingual support (LTR for English, RTL for Arabic)", () => {
       const actualDirection = isArabic(finalResponse) ? "rtl" : "ltr";
       expect(actualDirection).toBe(query.expectedDirection);
 
-      // For debugging: log the detected language direction
-      // console.log(
-      //   `Language Detected: ${actualDirection.toUpperCase()} | Expected: ${query.expectedDirection.toUpperCase()}`
-      // );
-
       // Save response with timestamp
       saveResponse(finalResponse, "ai-response-log");
     });
