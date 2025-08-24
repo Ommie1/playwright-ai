@@ -46,9 +46,11 @@ Run specific test, use following command,
 npx playwright test tests/chatbot-ui.spec.js
 ```
 
-## Disclaimer
+## Disclaimer (Bugs)
 
 - Occasionally, the application may stop providing responses; handle accordingly.
+- Incomplete responses.
+- Sometimes 500 error appears.
 
 ## Author
 
